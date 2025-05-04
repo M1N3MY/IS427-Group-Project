@@ -15,6 +15,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error
 
+# Optional: Neural network
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+
 # Allows the full dataframe to be displayed 
 pd.set_option('display.max_columns', None)
 
