@@ -7,6 +7,7 @@
 import pandas as pd
 import numpy as np
 import sklearn as sk
+import matplotlib.pyplot as plt
 
 # Imports classes and functions from the modules
 from sklearn.linear_model import LinearRegression
@@ -44,3 +45,34 @@ model.fit(X_train, y_train) # trains the data using the training data
 predictions = model.predict(X_test) # predicts prices using the testing data
 skl_mse = mean_squared_error(y_test, predictions) # compares predicted prices to actual prices
 print(f"mean squared error: {skl_mse}") 
+
+# Evaluation
+lr_mse = mean_squared_error(y_test, lr_predictions)
+lr_r2 = r2_score(y_test, lr_predictions)
+print(f"Linear Regression - MSE: {lr_mse:.2f}, R²: {lr_r2:.2f}")
+
+#Visualizes predictions
+plt.figure(figsize=(10, 6))
+plt.scatter(y_test, predictions, alpha=0.6)
+plt.xlabel("Actual Price")
+plt.ylabel("Predicted Price")
+plt.title("Actual vs Predicted Housing Prices")
+plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--')  # ideal line
+plt.show()
+
+# ========== Neural Network Model (Optional) ==========
+print("\n--- Training Neural Network (optional) ---")
+nn_model = Sequential([
+    Dense(64, activation='relu', input_shape=(X_train.shape[1],)),
+    Dense(32, activation='relu'),
+    Dense(1)  # Output layer
+])
+
+nn_model.compile(optimizer='adam', loss='mse')
+nn_model.fit(X_train, y_train, epochs=50, batch_size=32, verbose=1)
+
+# Predict and evaluate
+nn_predictions = nn_model.predict(X_test)
+nn_mse = mean_squared_error(y_test, nn_predictions)
+nn_r2 = r2_score(y_test, nn_predictions)
+print(f"Neural Network - MSE: {nn_mse:.2f}, R²: {nn_r2:.2f}")
